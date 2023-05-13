@@ -5,6 +5,7 @@ let find = false;
 const video_webcam = document.getElementById('webcam');
 const btn = document.getElementById('btn');
 let lvl = 0;
+//const successSound = new Audio('url_to_your_success_sound.mp3');
 const tasks = {
     'Ноутбук' : ['notebook', 'laptop', 'computer'],
     'Комьютерную мышь' : ['computer mouse', 'mouse'],
@@ -53,6 +54,7 @@ async function play () {
             }else{
                 btn.style.display = 'block';
                 classify.innerHTML = '';
+                //successSound.play();
             }
         }
 
