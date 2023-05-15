@@ -5,9 +5,18 @@ let find = false;
 const video_webcam = document.getElementById('webcam');
 const btn = document.getElementById('btn');
 let lvl = 0;
-//const successSound = new Audio('url_to_your_success_sound.mp3');
+
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+fetch('success.mp3')
+    .then(response => response.arrayBuffer())
+    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+    .then(audioBuffer => {
+        window.GameSound = audioBuffer;
+    });
+
 const tasks = {
-    'Ноутбук' : ['notebook', 'laptop', 'computer'],
+    'Ноутбук' : ['notebook', 'laptop'],
+    'Котика' : ['cat', 'tiger'],
     'Комьютерную мышь' : ['computer mouse', 'mouse'],
     'Очки' : ['glasses'],
 }
@@ -51,11 +60,15 @@ async function play () {
             if (lvl == tasks_keys.length) {
                 classify.innerHTML = 'Победа!';
                 btn.style.display = 'none';
+                successPlay();
             }else{
+                btn.innerHTML = 'Далее';
                 btn.style.display = 'block';
                 classify.innerHTML = '';
-                //successSound.play();
+                successPlay();
             }
+
+            break;
         }
 
         //classify.innerHTML = IMAGENET_CLASSES[classId];
@@ -100,6 +113,13 @@ btn.addEventListener('click', (e) => {
         play();
     });
 });
+
+function successPlay() {
+    let source = audioContext.createBufferSource();
+    source.buffer = window.GameSound;
+    source.connect(audioContext.destination);
+    source.start();
+}
 
 IMAGENET_CLASSES = ({
     0: 'tench, Tinca tinca',
