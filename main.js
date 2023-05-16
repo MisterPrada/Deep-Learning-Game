@@ -5,6 +5,7 @@ let find = false;
 const video_webcam = document.getElementById('webcam');
 const btn = document.getElementById('btn');
 let lvl = 0;
+let happy = 0;
 
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 fetch('success.mp3')
@@ -15,10 +16,10 @@ fetch('success.mp3')
     });
 
 const tasks = {
+    'Очки' : ['glasses'],
     'Ноутбук' : ['notebook', 'laptop'],
     'Котика' : ['cat', 'tiger'],
     'Комьютерную мышь' : ['computer mouse', 'mouse'],
-    'Очки' : ['glasses'],
 }
 const tasks_keys = Object.keys(tasks);
 
@@ -54,6 +55,12 @@ async function play () {
         let classId = (await predictedClass.data())[0];
 
         if (findSubstrings(IMAGENET_CLASSES[classId], tasks[tasks_keys[lvl]])) {
+            if ( happy < 10 )
+            {
+                happy++; continue;
+            }
+
+            happy = 0;
             find = false;
             lvl++;
 
